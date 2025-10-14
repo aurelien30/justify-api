@@ -103,3 +103,7 @@ Commit 1: Initial commit — dépôt et configuration Git créés
 Commit 2
 Ajout de la structure du projet, .gitignore et README.md
 
+Commit 3 
+Ajout des fichiers src, tests, data
+
+
