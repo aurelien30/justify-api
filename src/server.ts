@@ -7,7 +7,7 @@ import type { TokenRecord } from "./types.js";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
-const DAILY_LIMIT_WORDS = 80000;
+const DAILY_LIMIT_WORDS = 10;
 
 app.use(bodyParser.json({ type: "application/json" }));
 
