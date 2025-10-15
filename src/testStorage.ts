@@ -1,5 +1,5 @@
-import { saveOrUpdateToken, readAllTokens } from "./storage";
-import { TokenRecord } from "./types";
+import { saveOrUpdateToken, readAllTokens } from "./storage.js";
+import { TokenRecord } from "./types.js";
 
 console.log("=== TestStorage Start ===");
 

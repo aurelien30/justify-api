@@ -1,4 +1,4 @@
-import { justifyText } from "../src/justify";
+import { justifyText } from "../src/justify.js";
 
 describe("justifyText", () => {
   it("lines are <= width", () => {

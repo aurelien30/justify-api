@@ -1,18 +1,16 @@
-import express from "express"; // importe Express, mon framework HTTP
+import express from "express";
 import bodyParser from "body-parser";
-import {v4 as uuidv4} from "uuid"; // génère un token unique
-import { justifyText } from './justify';
-import {findToken, saveOrUpdateToken} from "./storage"; // importe les fonctions de lecture et d"ecriture des tokens.
-import type {TokenRecord} from "./types";
+import { v4 as uuidv4 } from "uuid";
+import { justifyText } from "./justify.js";
+import { findToken, saveOrUpdateToken } from "./storage.js";
+import type { TokenRecord } from "./types.js";
 
-const app = express(); // afin de créer l'application Express
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3000; // pour récupérer le port depuis process.env ou utiliser 3000 par defaut
-const DAILY_LIMIT_WORDS = 80000; // le quota quotidien en mots
-
+const app = express();
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+const DAILY_LIMIT_WORDS = 80000;
 
 app.use(bodyParser.json({ type: "application/json" }));
 
-// Route pour créer un nouveau jeton d'accès
 app.post("/api/token", (req, res) => {
   const { email } = req.body || {};
   if (!email || typeof email !== "string") {
@@ -26,10 +24,9 @@ app.post("/api/token", (req, res) => {
     usage: {}
   };
   saveOrUpdateToken(record);
-  return res.json({ token });
+  res.json({ token });
 });
 
-// Analyse les requêtes text/plain pour la route /justify
 app.use("/api/justify", bodyParser.text({ type: "text/plain", limit: "5mb" }));
 
 function extractToken(req: express.Request): string | null {
@@ -50,7 +47,6 @@ app.post("/api/justify", (req, res) => {
   const text = req.body as string;
   if (typeof text !== "string") return res.status(400).json({ error: "Content-Type must be text/plain with raw text body" });
 
-  //  compter le nombre de mots
   const words = text.trim().length === 0 ? 0 : text.trim().split(/\s+/).filter(Boolean).length;
 
   const today = new Date().toISOString().slice(0, 10);
@@ -59,7 +55,6 @@ app.post("/api/justify", (req, res) => {
     return res.status(402).json({ error: "Payment Required: daily word limit exceeded" });
   }
 
-  //met a jour le usage quotidien
   record.usage[today] = usedToday + words;
   saveOrUpdateToken(record);
 
