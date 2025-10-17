@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Justify API - Test</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+  <main>
+    <h1>Justify API — Test</h1>
+
+    <form id="tokenForm" aria-label="Request token">
+      <label for="email">Email:</label>
+      <input id="email" name="email" type="email" required aria-required="true" placeholder="test@example.com">
+      <button type="button" id="getToken">Obtenir token</button>
+    </form>
+
+    <form id="justifyForm" aria-label="Justify text">
+      <label for="tokenInput">Token (Bearer):</label>
+      <input id="tokenInput" name="token" type="text" required placeholder="Bearer ...">
+      <label for="text">Texte à justifier:</label>
+      <textarea id="text" name="text" rows="6" required></textarea>
+      <button type="button" id="sendJustify">Envoyer</button>
+    </form>
+
+    <pre id="output" aria-live="polite"></pre>
+  </main>
+
+  <script>
+    // simple JS pour demo; n'oubliez pas CORS si tu testes depuis un domaine différent
+    async function getToken() {
+      const email = document.getElementById('email').value;
+      const res = await fetch('/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const json = await res.json();
+      document.getElementById('output').textContent = JSON.stringify(json, null, 2);
+    }
+    async function sendJustify() {
+      const token = document.getElementById('tokenInput').value.replace(/^Bearer\s*/i,'');
+      const text = document.getElementById('text').value;
+      const res = await fetch('/api/justify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain',
+          'Authorization': 'Bearer ' + token
+        },
+        body: text
+      });
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const j = await res.json();
+        document.getElementById('output').textContent = JSON.stringify(j, null, 2);
+      } else {
+        const txt = await res.text();
+        document.getElementById('output').textContent = txt;
+      }
+    }
+    document.getElementById('getToken').onclick = getToken;
+    document.getElementById('sendJustify').onclick = sendJustify;
+  </script>
+</body>
+</html>
