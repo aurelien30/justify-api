@@ -110,11 +110,24 @@ Ceci est un exemple de texte à justifier. Il doit être envoyé en plain text.
 
 Une page de test locale `public/index.html` est incluse pour tester l’API sans Postman.  
 Elle contient deux formulaires :
-- un pour **obtenir un token** via `/api/token`
-- un pour **justifier un texte** via `/api/justify`
+- un pour **obtenir un token** → récupère le token via `/api/token`
+- un pour **justifier un texte** → teste la justification directement dans le navigateur via `/api/justify`
 
 > Si vous modifier cette page, valide-la sur [https://validator.w3.org/](https://validator.w3.org/)  
 > (respect du doctype, des balises `<html lang="fr">`, `<meta charset="utf-8">`, et des labels `<label for="...">`).
+
+Via la page web
+1. Lance le serveur (`npm run dev`)
+2. Ouvre le navigateur à `http://localhost:3000`
+3. Formulaire “Obtenir un token” :
+   Entre ton email
+   Clique sur “Générer le token”
+   Le token s’affiche sous le formulaire
+   
+4. Formulaire “Justifier un texte” :
+   Copie ton texte à justifier
+   Clique sur “Envoyer”
+   Le texte justifié s’affiche dans la page
 
 ---
 
@@ -133,6 +146,7 @@ Une fois déployée, L'API sera accessible depuis une URL publique (ex : `https:
 **ASSIA Aurélien**  
 Étudiant en 3ᵉ année de Bachelor en Ingénierie du Web — ESGI  
 Email: aurassil3003@gmail.com
+
 
 
 
