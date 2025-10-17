@@ -1,77 +1,138 @@
-{"id":"18403","variant":"standard","title":"README - justify-api"}
-# justify-api
+# Justify API
 
-API REST en Node.js + TypeScript qui justifie un texte (80 caractères par ligne), protégée par token et avec quota journalier.
+API REST en **Node.js + TypeScript** qui justifie un texte (80 caractères par ligne), protégée par **token** et avec **quota journalier de 80 000 mots**.
 
-## Installation & dev
+---
+
+## Installation & développement
 
 ```bash
-# cloner le repo
+# Cloner le repo
 git clone https://github.com/<ton-username>/justify-api.git
 cd justify-api
 
-# installe les dépendances
+# Installer les dépendances
 npm install
 
-# lance en dev (watch)
+# Lancer le serveur en mode développement (avec hot reload)
 npm run dev
 ```
 
-## Build & start (production)
+---
+
+## Build & production
 
 ```bash
 npm run build
 npm start
 ```
 
-## Endpoints (exemples Postman / curl)
+---
 
-### 1) Obtenir un token
-**POST** `/api/token`  
-Headers:
-- `Content-Type: application/json`
+## Endpoints (exemples Postman)
 
-Body (raw JSON):
+### 1) Générer un token
+
+**Méthode :** `POST`  
+**URL :** `http://localhost:3000/api/token`  
+
+**Headers :**
+| Key | Value |
+|------|--------|
+| Content-Type | application/json |
+
+**Body (raw JSON) :**
 ```json
-{"email":"test@example.com"}
+{"email": "test@example.com"}
 ```
 
-Réponse:
+**Réponse attendue :**
 ```json
-{"token":"<uuid>"}
+{"token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}
 ```
+
+---
 
 ### 2) Justifier un texte
-**POST** `/api/justify`  
-Headers:
-- `Content-Type: text/plain`
-- `Authorization: Bearer <token>`
 
-Body: texte brut (raw text), par ex:
+**Méthode :** `POST`  
+**URL :** `http://localhost:3000/api/justify`  
+
+**Headers :**
+| Key | Value |
+|------|--------|
+| Content-Type | text/plain |
+| Authorization | Bearer <ton_token_valide> |
+
+**Body (raw Text) :**
 ```
 Ceci est un exemple de texte à justifier. Il doit être envoyé en plain text.
 ```
 
-Réponse: `200 OK` — `Content-Type: text/plain; charset=utf-8` (texte justifié, lignes 80 chars)
+**Réponse attendue :**
+- **HTTP 200 OK**
+- **Content-Type :** `text/plain; charset=utf-8`
+- Corps : texte justifié, chaque ligne = 80 caractères maximum.
 
-## Erreurs attendues
-- **400 Bad Request** : body malformé ou `Content-Type` incorrect (ex: JSON au lieu de text/plain).
-- **401 Unauthorized** : token manquant ou invalide.
-- **402 Payment Required** : quota journalier dépassé (80 000 mots / jour par token).
+---
 
-## Tests manuels proposés (Postman)
-1. POST `/api/token` → récupére token.
-2. POST `/api/justify` avec header Authorization et `text/plain` → vérifie une sortie.
-3. Tester erreurs : pas d’Authorization (401), token invalide (401), Content-Type incorrect (400), quota > 80k (402).
+## Codes d’erreur possibles
 
-## Page de test 
-Le `public/index.html` est fourni pour tester localement. Quand on fournit une page HTML pour le dépôt, valide-la sur https://validator.w3.org/.
+| Code | Type | Explication |
+|------|------|--------------|
+| 400 | Bad Request | Mauvais format du body ou Content-Type incorrect |
+| 401 | Unauthorized | Token manquant ou invalide |
+| 402 | Payment Required | Quota journalier de 80 000 mots dépassé |
 
-## Déploiement
-Exemples pour Render / Railway :
-- Build command: `npm ci && npm run build`
-- Start command: `node dist/server.js`
+---
+
+## Tests manuels (via Postman)
+
+ **1)Créer un token**
+- Requête : `POST /api/token`
+- Vérifie la réponse `{ "token": "..." }`
+
+ **2) Justifier un texte**
+- Requête : `POST /api/justify`
+- Ajoute le header `Authorization: Bearer <token>`  
+- Type de body : `text/plain`
+- Vérifie que le texte est justifié à 80 caractères par ligne.
+
+**3) Tester les erreurs**
+- Sans token → 401  
+- Token invalide → 401  
+- Mauvais Content-Type → 400  
+- Texte > 80 000 mots → 402  
+
+---
+
+## Page de test HTML 
+
+Une page de test locale `public/index.html` est incluse pour tester l’API sans Postman.  
+Elle contient deux formulaires :
+- un pour **obtenir un token** via `/api/token`
+- un pour **justifier un texte** via `/api/justify`
+
+> Si vous modifier cette page, valide-la sur [https://validator.w3.org/](https://validator.w3.org/)  
+> (respect du doctype, des balises `<html lang="fr">`, `<meta charset="utf-8">`, et des labels `<label for="...">`).
+
+---
+
+## Déploiement (Render / Railway)
+
+**Commandes Render :**
+- **Build command :** `npm ci && npm run build`
+- **Start command :** `node dist/server.js`
+
+Une fois déployée, L'API sera accessible depuis une URL publique (ex : `https://justify-api.onrender.com`).
+
+---
 
 ## Auteur
-ASSIA Aurélien — Étudiant en troisème année de Bachelor en ingénerie web (ESGI)
+
+**ASSIA Aurélien**  
+Étudiant en 3ᵉ année de Bachelor en Ingénierie du Web — ESGI  
+Email: aurassil3003@gmail.com
+
+
 
