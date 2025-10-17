@@ -8,7 +8,7 @@ API REST en **Node.js + TypeScript** qui justifie un texte (80 caractères par l
 
 ```bash
 # Cloner le repo
-git clone https://github.com/<ton-username>/justify-api.git
+git clone https://github.com/aurelien30/justify-api.git
 cd justify-api
 
 # Installer les dépendances
@@ -88,6 +88,10 @@ Ceci est un exemple de texte à justifier. Il doit être envoyé en plain text.
 
 ## Tests manuels (via Postman)
 
+**URL (locale)** : http://localhost:3000  
+**URL (déployée)** : https://justify-api-zr3y.onrender.com
+
+
  **1)Créer un token**
 - Requête : `POST /api/token`
 - Vérifie la réponse `{ "token": "..." }`
@@ -146,6 +150,7 @@ Une fois déployée, L'API sera accessible depuis une URL publique (ex : `https:
 **ASSIA Aurélien**  
 Étudiant en 3ᵉ année de Bachelor en Ingénierie du Web — ESGI  
 Email: aurassil3003@gmail.com
+
 
 
 
