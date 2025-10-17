@@ -71,10 +71,12 @@ app.get("/", (_, res) => {
   res.send("Justify API - up. POST /api/token and POST /api/justify with Authorization: Bearer <token>");
 });
 
-// Si aucune route ne correspond, renvoie index.html
-app.get("*", (_, res) => {
+app.use((_, res) => {
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
+
+
+
 
 
 app.listen(PORT, () => {
