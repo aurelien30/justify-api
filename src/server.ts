@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { justifyText } from "./justify.js";
 import { findToken, saveOrUpdateToken } from "./storage.js";
 import type { TokenRecord } from "./types.js";
+import path from "path";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -62,6 +63,9 @@ app.post("/api/justify", (req, res) => {
   res.setHeader("Content-Type", "text/plain; charset=utf-8");
   res.send(justified);
 });
+
+// Sert les fichiers du dossier "public"
+app.use(express.static(path.join(process.cwd(), "public")));
 
 app.get("/", (_, res) => {
   res.send("Justify API - up. POST /api/token and POST /api/justify with Authorization: Bearer <token>");
